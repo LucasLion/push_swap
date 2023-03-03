@@ -6,7 +6,7 @@
 /*   By: llion <llion@student.42mulhouse.fr >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:12:32 by llion             #+#    #+#             */
-/*   Updated: 2023/03/01 16:08:19 by llion            ###   ########.fr       */
+/*   Updated: 2023/03/03 15:34:58 by llion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,27 @@ int	*put_in_tab(t_pile *p)
 	i = 0;
 	tmp = p;
 	len = pilesize(p);
-	tab = malloc(sizeof(int) * (len + 1));
+	tab = malloc(sizeof(int) * len);
 	while (i < len)
 	{
 		tab[i] = tmp->value;
 		i++;
 		tmp = tmp->next;
 	}
-	tab[i] = 0;
-	i = 0;
 	return (tab);
 }
 
-void	sort_tab(int *tab)
+void	sort_tab(int *tab, int len)
 {
 	int	i;
 	int	j;
 	int	tmp;
 
 	i = 0;
-	while (tab[i])
+	while (i < len)
 	{
 		j = i + 1;
-		while (tab[j])
+		while (j < len)
 		{
 			if (tab[i] > tab[j])
 			{

@@ -6,7 +6,7 @@
 /*   By: llion <llion@student.42mulhouse.fr >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 18:15:59 by llion             #+#    #+#             */
-/*   Updated: 2023/03/01 16:08:18 by llion            ###   ########.fr       */
+/*   Updated: 2023/03/03 15:42:05 by llion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,16 @@ int	get_index_max(t_pile *p)
 	return (0);
 }
 
-void	rotate_or_reverse_rotate(int len, t_piles *p, int target)
+void	rotate_or_reverse_rotate(t_piles *p, int target)
 {
 	int	last_index;
 	int	first_index;
-	//int	len;
+	int	pilelen;
 	int	i;
 
 	i = 0;
-	//len = pilesize(p->a);
-	last_index = len - get_last_index(p, target);
+	pilelen = pilesize(p->a);
+	last_index = pilelen - get_last_index(p, target);
 	first_index = get_first_index(p, target);
 	if (first_index < last_index)
 	{
@@ -142,30 +142,34 @@ void	rotate_or_reverse_rotate_max(t_piles *p)
 	pa(p);
 }
 
-void	pre_sort(t_piles *p)
+void	pre_sort(t_piles *p, int len)
 {
 	int i = 0;
 	int j = 1;
-	int	div = 11;
+	int	div;
 	int	target;
-	int	len;
 	int *tab; 
 
-	len = pilesize(p->a);
+	if (len > 5 && len <= 100)
+		div = 7;
+	else if (len > 100)
+		div = 14;
+	else 
+		div = 5;
 	tab = put_in_tab(p->a);
 	while (j <= (div + 1))
 	{
-		sort_tab(tab);
+		sort_tab(tab, len);
 		i = 0;
 		target = tab[((len / div) * j) - 1];
-		while (i < len / div)
+		while (i < (len / div))
 		{
-			rotate_or_reverse_rotate(len, p, target);
+			rotate_or_reverse_rotate(p, target);
 			i++;
 		}
-		//ft_printf("len: %d\ndiv: %d\ntarget: %d\n", len, div, target);
 		j++;
 	}
+	free(tab);
 }
 
 void	sort(t_piles *p)
@@ -179,26 +183,45 @@ void	sort(t_piles *p)
 	}
 }
 
+void	sort2(t_piles *p)
+{
+	if (p->a->value > p->a->next->value)
+		ra(p);
+}
+
+// TODO CAS PARTICULIERS
+
 int	main(int argc, char *argv[])
 {
 	t_piles	*p;
+	int		len;
 
 	p = malloc(sizeof(t_piles));
 	init_piles(p);
 	if (argc > 1)
 	{
 		valid_args(argv, p);
-		if (is_sort(p->a) || p->a == NULL || !duplicates(p->a))
-			ft_error();
+		if (is_sort(p->a))
+			return (0);
+		if (p->a == NULL || !duplicates(p->a, p))
+			ft_error(p->a, p);
 	}
 	else
 		return (0);
-	pre_sort(p);
+	len = pilesize(p->a);
+	if (len == 2)
+	{
+		sort2(p);
+		return (0);
+	}
+	if (len == 3)
+		return (0);
+	pre_sort(p, len);
 	sort(p);
-	//print_ps(p);
 	free_pile(p->a);
 	free_pile(p->b);
-	free(p);
+	if (p)
+		free(p);
 	return (0);
 }
 

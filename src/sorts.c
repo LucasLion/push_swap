@@ -6,7 +6,7 @@
 /*   By: llion <llion@student.42mulhouse.fr >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:41:56 by llion             #+#    #+#             */
-/*   Updated: 2023/02/01 18:47:44 by llion            ###   ########.fr       */
+/*   Updated: 2023/03/03 15:34:53 by llion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	reverse_rotate(t_pile **pile)
 
 		head = *pile;
 		last = *pile;
+		second_last = NULL;
 		while (last->next)
 		{
 			second_last = last;

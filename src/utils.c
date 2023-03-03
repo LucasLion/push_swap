@@ -6,7 +6,7 @@
 /*   By: llion <llion@student.42mulhouse.fr >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:31:55 by llion             #+#    #+#             */
-/*   Updated: 2023/03/01 16:08:19 by llion            ###   ########.fr       */
+/*   Updated: 2023/03/03 15:34:56 by llion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ int		tab_len(char **tab)
 	return (i);
 }
 
-void	ft_error()
+void	ft_error(t_pile *p, t_piles *pp)
 {
 	write(2, "Error\n", 6);
+	free_pile(p);
+	free(pp);
 	exit(0);
 }
 
@@ -59,7 +61,7 @@ int	is_sort(t_pile *p)
 	return (1);
 }
 
-int	duplicates(t_pile *p)
+int	duplicates(t_pile *p, t_piles *pp)
 {
 	t_pile *tmp1;
 	t_pile *tmp2;
@@ -71,7 +73,7 @@ int	duplicates(t_pile *p)
 		while (tmp2->next)
 		{
 			if (tmp1->value == tmp2->next->value)
-				ft_error();
+				ft_error(p, pp);
 			tmp2 = tmp2->next;
 		}
 		tmp1 = tmp1->next;
